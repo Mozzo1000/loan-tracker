@@ -17,3 +17,4 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
+    JWT_ACCESS_TOKEN_EXPIRES = False
