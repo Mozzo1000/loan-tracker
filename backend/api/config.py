@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-print(os.environ.get('LT_DB_CONNECTION'))
+
 class Config(object):
     DEBUG = False
     TESTING = False
