@@ -1,0 +1,38 @@
+# docker-compose.yml
+version: '3.8'
+services:
+    db:
+        image: "postgres" # use latest official postgres version
+        container_name: "loantracker_db"
+        ports:
+            - 5432:5432  
+        restart: always
+        env_file:
+            - docker.env
+        volumes:
+            - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+            - ./database/initial_db.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: "loantracker_pgadmin"
+        env_file:
+            - docker.env # configure postgres
+        ports: 
+            - "16543:80"
+        depends_on: 
+            - db
+    api:
+        build: .
+        container_name: "loantracker_api"
+        restart: always
+        ports:
+            - "5000:5000"
+        env_file:
+            - docker.env
+        volumes:
+            - ./api:/code
+        depends_on:
+            - db
+
+volumes:
+    database-data: # named volumes can be managed easier using docker-compose
