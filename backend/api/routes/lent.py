@@ -7,9 +7,9 @@ lent = Blueprint('lent', __name__)
 @lent.route('/lent', methods=['GET'])
 @jwt_required()
 def get_all_lents():
-    lent_schema = LentSchema()
+    lent_schema = LentSchema(many=True)
     lents = Lent.query.filter_by(account_id=User.find_by_email(get_jwt_identity()).id).all()
-    return lent_schema.dump(lents)
+    return jsonify(lent_schema.dump(lents))
 
 @lent.route('/lent/<id>', methods=['GET'])
 @jwt_required()
